@@ -1,4 +1,4 @@
-﻿# Timetable Chrome Extension
+# Timetable Chrome Extension
 
 A simple Chrome Extension made with Vue to give students a Timetable class application in their browser.
 
@@ -10,9 +10,9 @@ Features
 
 Node.js and Vue has to be installed for this to run. *Go to their respective websites for installation instructions*.
 
-### To get started, clone this repository and run
+### To get started, clone this repositor, cd into it and run
 ```
-npm run install
+npm install
 ```
 and
 ```

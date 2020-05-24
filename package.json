@@ -1,6 +1,6 @@
 {
   "name": "timetable-extension",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A Vue.js web extension",
   "author": "Frei Bjerkestrand <frei.bjerkestrand@hotmail.no>",
   "engines": {
