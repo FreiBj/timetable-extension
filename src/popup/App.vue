@@ -2,11 +2,8 @@
   <div class="extension">
     <h1>Hi there! 👋 Hope you're doing great!</h1>
     
-    <h1>Next up: {{ classes.monday.first }}</h1>
-    <button v-on:click="greet">Greet</button>
-    
-    <p v-for="data in classes">{{ data.first }} - {{ data.time }}</p>
-    
+    <h1>Next up: <span>{{ classes.monday.first }}</span></h1>
+
     <div id="tabs" class="container">
   
       <div class="tabs">
@@ -21,7 +18,7 @@
         
         <div v-if="activetab === 1" class="tabcontent">
           <div v-for="data in classes" class="class" v-bind:style="{ 'background-color': data.color }">
-            <h1>{{ data.first }}</h1>
+            <h1>{{ data.time }} {{ data.first }}</h1>
           </div>
         </div>
         
@@ -224,7 +221,6 @@
         {{ value }}
       </li>
     </ul>
-      
     
   </div>
 </template>
@@ -247,11 +243,11 @@ export default {
       },
       
       classes: {
-        monday: {first:"Engelsk", time:"12:30", color:"darkseagreen"},
-        tuesday: {first:"Matte", time:"10:30", color:"darkgoldenrod"},
-        wednesday: {first:"Naturfag", time:"10:30", color:"darkmagneta"},
-        thursday: {first:"Gym", time:"10:30", color:"navy"},
-        friday: {first:"UV", time:"10:30", color:"green"}
+        monday: {first:"Engelsk", time:"12 30", color:"darkseagreen"},
+        tuesday: {first:"Matte", time:"10 30", color:"darkgoldenrod"},
+        wednesday: {first:"Naturfag", time:"10 30", color:"darkmagneta"},
+        thursday: {first:"Gym", time:"10 30", color:"navy"},
+        friday: {first:"UV", time:"10 30", color:"green"}
         
       }
     };
@@ -310,29 +306,90 @@ export default {
 </script>
 
 <style>
-body {
-  width:600px;
-  height:100%;
-  margin:1em;
-  padding:0;
-  
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap:wrap;
-  align-content: center;
-  align-items: center;
-  
-  background:#414a4c;
-  color:white;
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 400;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
 }
 
-* {color:white;}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+body {
+  width:700px;
+  /*height:100px;*/
+  /*margin:1em 1em;*/
+  padding:0;
+  
+  font-family: "San Francisco" !important;
+  font-size:1.5em;
+  background-color: white;
+  /*color:black;*/
+  
+  /*display:flex;*/
+  /*flex-direction: column;*/
+  /*justify-content: center;*/
+  /*flex-wrap:wrap;*/
+  /*align-content: center;*/
+  /*align-items: center;*/
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color:black;
+}
+span { font-weight:200;}
+button {color:black;}
 
 div.class {
   width:100%;
+  display:flex;
+  align-items: flex-start;
+  justify-content: flex-start;
   background-color: darkmagenta;
-  padding:2em;
+  padding:1.5em;
 }
   
 table:not(.today-view) {
@@ -353,6 +410,13 @@ tr:nth-child(even) {
 
 h1 {
   text-align: center;
+  font-family: "San Francisco";
+  font-size:1.3em;
+  font-weight: bold;
+}
+
+p {
+  font-family: "San Francisco";
 }
 
 .myTimetable {
@@ -397,34 +461,38 @@ h1 {
   /*max-width: 620px;*/
   /*min-width: 420px;*/
   /*margin: 40px auto;*/
-  font-family: Arial, Helvetica, sans-serif;
+  /*font-family: Arial, Helvetica, sans-serif;*/
   font-size: 0.9em;
 }
 
 .tabs {
   overflow: hidden;
-  /*margin-left: 20px;*/
-  /*margin-bottom: -2px;*/
+  width:60vw;
+  display:flex;
+  /*justify-content:space-evenly;*/
+/*   margin-left: 20px; */
+/*   margin-bottom: -2px; */
 }
 
 .tabs ul {
   list-style-type: none;
-  margin-left: 20px;
+  /*margin-left: 20px;*/
 }
 
 .tabs a {
-  float: left;
+/*   float: left; */
   cursor: pointer;
-  padding: 12px 10px;
+  padding: 4px;
   transition: background-color 0.2s;
-  border: 1px solid #ccc;
+/*   border: 1px solid #ccc; */
   border-right: none;
-  background-color: #f1f1f1;
-  /*border-radius: 10px 10px 0 0;*/
-  font-size:15px;
-}
-.tabs a:last-child {
-  border-right: 1px solid #ccc;
+  font-family:"San Francisco";
+  font-weight:bolder;
+/*   background-color: #f1f1f1; */
+/*   border-radius: 10px 10px 0 0; */
+  font-size:1.5em;
+  flex:1;
+  color:lightgray;
 }
 
 .tabs a:hover {
@@ -434,16 +502,19 @@ h1 {
 
 .tabs a.active {
   background-color: #fff;
-  color: #484848;
-  border-bottom: 2px solid #fff;
+  color: black;
+  /*border-bottom: 2px solid #fff;*/
   cursor: default;
+  flex:2;
+  display:flex;
+  justify-content: flex-start;
 }
 
 .tabcontent {
-  padding: 30px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 3px 3px 6px #e1e1e1
+  /*padding: 15px;*/
+  /*border: 1px solid #ccc;*/
+  /*border-radius: 10px;*/
+  /*box-shadow: 3px 3px 6px #e1e1e1*/
 }
 
 </style>

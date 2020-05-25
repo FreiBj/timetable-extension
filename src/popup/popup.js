@@ -14,7 +14,7 @@ new Vue({
   render: h => h(App),
 });
 
-const button = document.createElement('button');
+// const button = document.createElement('button');
 button.textContent = 'Greet me!'
 document.body.insertAdjacentElement('afterbegin', button);
 button.addEventListener('click', () => {
@@ -27,8 +27,26 @@ button.addEventListener('click', () => {
     options: {
       title: 'Your next class is in 5 minutes',
       message: 'Get your books ready!',
-      iconUrl: 'icons/icon_128.png',
+      iconUrl: 'icons/icon.png',
       type: 'basic'
     }
   });
+});
+
+var $owl = $('.owl-carousel');
+
+$owl.children().each( function( index ) {
+  $(this).attr( 'data-position', index ); // NB: .attr() instead of .data()
+});
+
+$owl.owlCarousel({
+  center: true,
+  loop: true,
+  items: 5,
+});
+
+$(document).on('click', '.owl-item>div', function() {
+  // see https://owlcarousel2.github.io/OwlCarousel2/docs/api-events.html#to-owl-carousel
+  var $speed = 300;  // in ms
+  $owl.trigger('to.owl.carousel', [$(this).data( 'position' ), $speed] );
 });
