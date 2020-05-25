@@ -2,21 +2,8 @@
   <div class="extension">
     <h1>Hi there! 👋 Hope you're doing great!</h1>
     
-    <h1>Input</h1>
-    
-    <h1>My Timetable</h1>
-    
-    <div class="today-view">
-      <table class="today-view">
-        <tr>
-          <th>dasf</th>
-        </tr>
-        
-        <tr>
-          <td>asdfasd</td>
-        </tr>
-      </table>
-    </div>
+    <h1>Next up: {{ classes.monday.first }}</h1>
+    <button v-on:click="greet">Greet</button>
     
     <p v-for="data in classes">{{ data.first }} - {{ data.time }}</p>
     
@@ -33,28 +20,36 @@
       <div class="content">
         
         <div v-if="activetab === 1" class="tabcontent">
-          <div class="class" style="background-color:darkblue;">
-              <h1>D</h1>
-            </div>
-            
-            <div class="class" style="background-color:darkseagreen;">
-              <h1>Engelsk</h1>
-            </div>
-            
-            <div class="class" style="background-color:darkmagneta;">
-              <h1>Engelsk</h1>
-            </div>
+          <div v-for="data in classes" class="class" v-bind:style="{ 'background-color': data.color }">
+            <h1>{{ data.first }}</h1>
           </div>
+        </div>
         
         <div v-if="activetab === 2" class="tabcontent">
-            Content for tab two
+          <div v-for="data in classes" class="class" v-bind:style="{ 'background-color': data.color }">
+            <h1>{{ data.first }}</h1>
+          </div>
         </div>
         
         <div v-if="activetab === 3" class="tabcontent">
-            Content for tab three
+          <div v-for="data in classes" class="class" v-bind:style="{ 'background-color': data.color }">
+            <h1>{{ data.first }}</h1>
+          </div>
         </div>
+        
+        <div v-if="activetab === 4" class="tabcontent">
+          <div v-for="data in classes" class="class" v-bind:style="{ 'background-color': data.color }">
+            <h1>{{ data.time }}</h1>
+          </div>
+        </div>
+        
+        <div v-if="activetab === 5" class="tabcontent">
+          <div v-for="data in classes" class="class" v-bind:style="{ 'background-color': data.color }">
+            <h1>{{ data.color }}</h1>
+          </div>
+        </div>
+        
       </div>
-      
     </div>
     
     <table class="myTimetable">
@@ -234,10 +229,90 @@
   </div>
 </template>
 
+<script>
+const browser = require("webextension-polyfill");
+
+export default {
+  data() {
+    return {
+      currentColor: "#FFF",
+      currentPopupColor: "#FFF",
+      message: "Hello, Vue!",
+      activetab: 1,
+      
+      object: {
+        title: 'How to do lists in Vue',
+        author: 'Jane Doe',
+        publishedAt: '2016-04-10'
+      },
+      
+      classes: {
+        monday: {first:"Engelsk", time:"12:30", color:"darkseagreen"},
+        tuesday: {first:"Matte", time:"10:30", color:"darkgoldenrod"},
+        wednesday: {first:"Naturfag", time:"10:30", color:"darkmagneta"},
+        thursday: {first:"Gym", time:"10:30", color:"navy"},
+        friday: {first:"UV", time:"10:30", color:"green"}
+        
+      }
+    };
+  },
+  computed: {
+    bodyColor: {
+      get() {
+        return this.$data.currentColor;
+      },
+      set(val) {
+        this.$data.currentColor = val;
+
+        // Once `bodyColor` changes it sends a
+        // message that content script will be listening
+        browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+          browser.tabs.sendMessage(tabs[0].id, {
+            msg: { action: "change_body_color", value: val }
+          });
+        });
+      }
+    },
+
+    popupBodyColor: {
+      get() {
+        return this.$data.currentPopupColor;
+      },
+      set(val) {
+        // Once `popupBodyColor` changes, we change the popup
+        // body color to the new value, no need to send message,
+        // it's the same context
+        this.$data.currentPopupColor = val;
+        document.body.style.background = val;
+      }
+    }
+  },
+
+  methods: {
+    // method called once popup button is clicked, at that moment sends a
+    // message that content script will be listening and will do some action there
+    writeInConsole() {
+      browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+        browser.tabs
+          .sendMessage(tabs[0].id, { msg: { action: "print_in_console" } })
+          .then(() => {
+            alert(
+              "Open the browser's console to see the magic. Need to have at least one tab in some page."
+            );
+          });
+      });
+    },
+    greet: function(event) {
+      alert(100);
+    }
+  }
+};
+</script>
+
 <style>
 body {
   width:600px;
-  height:700px;
+  height:100%;
   margin:1em;
   padding:0;
   
@@ -372,81 +447,3 @@ h1 {
 }
 
 </style>
-
-<script>
-const browser = require("webextension-polyfill");
-
-export default {
-  data() {
-    return {
-      currentColor: "#FFF",
-      currentPopupColor: "#FFF",
-      message: "Hello, Vue!",
-      activetab: 1,
-      
-      object: {
-        title: 'How to do lists in Vue',
-        author: 'Jane Doe',
-        publishedAt: '2016-04-10'
-      },
-      
-      classes: {
-        monday: {first:"askdfkam", time:"12:30"},
-        tuesday: {first:"kfasd"},
-        wednesday: {first:"oopopp23"},
-        thursday: {first:"21234"},
-        friday: {first:"pgpasdl"}
-        
-      }
-    };
-  },
-
-  computed: {
-    bodyColor: {
-      get() {
-        return this.$data.currentColor;
-      },
-      set(val) {
-        this.$data.currentColor = val;
-
-        // Once `bodyColor` changes it sends a
-        // message that content script will be listening
-        browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
-          browser.tabs.sendMessage(tabs[0].id, {
-            msg: { action: "change_body_color", value: val }
-          });
-        });
-      }
-    },
-
-    popupBodyColor: {
-      get() {
-        return this.$data.currentPopupColor;
-      },
-      set(val) {
-        // Once `popupBodyColor` changes, we change the popup
-        // body color to the new value, no need to send message,
-        // it's the same context
-        this.$data.currentPopupColor = val;
-        document.body.style.background = val;
-      }
-    }
-  },
-
-  methods: {
-    // method called once popup button is clicked, at that moment sends a
-    // message that content script will be listening and will do some action there
-    writeInConsole() {
-      browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
-        browser.tabs
-          .sendMessage(tabs[0].id, { msg: { action: "print_in_console" } })
-          .then(() => {
-            alert(
-              "Open the browser's console to see the magic. Need to have at least one tab in some page."
-            );
-          });
-      });
-    }
-  }
-};
-</script>
