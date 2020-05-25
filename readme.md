@@ -8,6 +8,8 @@ Features
 - See your next classes and which classroom is up next.
 -  Alerts you 5/10/20 minutes before the current class is dismissed.
 
+[Made with vue-web-extension from Kocal](https://github.com/Kocal/vue-web-extension)
+
 Node.js and Vue has to be installed for this to run. *Go to their respective websites for installation instructions*.
 
 ### To get started, clone this repository, cd into it and run
@@ -27,4 +29,4 @@ $ npm run watch:dev
 ```
 📚 The extension should now be ready for testing and development 🎉
 
-Made with 🥛 by [Frei Bjerkestrand](freibj.github.io)
+Made with 🥛 by [Frei Bjerkestrand](https://www.freibj.github.io)
